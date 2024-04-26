@@ -1,0 +1,3 @@
+App --> App.jsx
+    WeatherForm --> Formulario para buscar ciudad --> Al hacer clic aparece la info de abajo
+    WeatherList -->Dibujo de los datos del fetch
