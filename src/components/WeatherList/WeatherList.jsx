@@ -3,7 +3,7 @@ import WeatherCard from "./WeatherCard";
 import axios from "axios";
 
 const WeatherList = () => {
-  const [value, setValue] = useState(""); // Para guardar el dato a buscar
+  const [value, setValue] = useState("Madrid"); // Para guardar el dato a buscar
   const [posts, setPosts] = useState([]); // Para guardar los posts
   const inputRef = useRef();
 
@@ -28,24 +28,26 @@ const WeatherList = () => {
     fetchData();
   }, [value]); // componentDidUpdate
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(inputRef.current.value)
     setValue(inputRef.current.value) // Modificando el estado de Value
   };
 
+  const paintCards = () => posts.map((forecast, index) => <WeatherCard
+    key={index}
+    date={forecast.dt_txt}
+    temp={Math.round(forecast.main.temp)}
+    weather={forecast.weather[0].main}
+    icon={forecast.weather[0].icon}
+  />);
+
   return <section>
     <form onSubmit={handleSubmit}>
-      <input ref={inputRef}/>
+      <input ref={inputRef} />
     </form>
     <h3>{value}</h3>
-    {posts.map((forecast, i) => 
-    <article key={i}>
-      <p>{forecast.dt_txt}</p>
-      <p>{forecast.main.temp}</p>
-    </article>
-    )}
+    {paintCards()}
   </section>
 };
 
