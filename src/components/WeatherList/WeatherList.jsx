@@ -6,6 +6,7 @@ const WeatherList = () => {
   // Cambiar el "Madrid" por la geolocalización
   const [value, setValue] = useState(""); // Para guardar el dato a buscar
   const [weatherFetch, setweatherFetch] = useState([]); // Para guardar los weatherFetch
+  const [cityName, setCityName] = useState(); // Para el nombre de la ciudad buscada
   const inputRef = useRef();
 
   useEffect(() => {
@@ -16,11 +17,8 @@ const WeatherList = () => {
         // Petición HTTP
         const res = await axios.get(`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${import.meta.env.VITE_API_KEY}&units=metric`);
         const json = res.data.list;
-        console.log(res.data.city.name)
-        let localCity = res.data.city.name
+        setCityName(res.data.city.name) //Nombre de la ciudad por defecto
 
-        setValue(localCity)
-        
         // Guarda en el array de weatherFetch el resultado. Procesa los datos
         setweatherFetch(json);
       } catch (e) {
@@ -37,6 +35,7 @@ const WeatherList = () => {
         // Petición HTTP
         const res = await axios.get(`http://api.openweathermap.org/data/2.5/forecast?q=${value}&appid=${import.meta.env.VITE_API_KEY}&units=metric`);
         const json = res.data.list;
+        setCityName(res.data.city.name)
 
         // Guarda en el array de weatherFetch el resultado. Procesa los datos
         setweatherFetch(json);
@@ -67,11 +66,9 @@ const WeatherList = () => {
       <input ref={inputRef} placeholder="Ciudad" />
       <button>Buscar</button>
     </form>
-    <h3>{value}</h3>
+    <h3>{cityName}</h3>
     {paintCards()}
   </section>
 };
 
 export default WeatherList;
-
-//Iconos en la api del tiempo
